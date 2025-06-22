@@ -155,7 +155,7 @@ const HeroSection = () => {
     >
       {/* UX FIX: Changed logo behavior from hover to click */}
       <div className="absolute top-5 left-5 sm:top-8 sm:left-8 z-20">
-        <div
+        {/* <div
           onClick={() => setIsLogoTextVisible(!isLogoTextVisible)}
           className="flex cursor-pointer items-center gap-3 overflow-hidden rounded-full bg-black/30 p-1.5 shadow-md transition-all duration-500 ease-in-out hover:bg-black/50 hover:shadow-lg backdrop-blur-sm"
         >
@@ -187,7 +187,7 @@ const HeroSection = () => {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* Background Image and Gradient Overlay */}
       <div
@@ -207,16 +207,17 @@ const HeroSection = () => {
         >
           Hãy đến với chúng tôi
           <span
-            className="block w-full text-center pb-2 overflow-y-visible"
+            className="block w-full text-center pb-2"
             style={{
               fontFamily: "'Pacifico', cursive",
-              fontSize: "clamp(3rem, 8vw, 6rem)",
-              background: "linear-gradient(90deg, #2dd4bf 0%, #38bdf8 100%)",
+              fontSize: "clamp(2.5rem, 8vw, 5rem)",
+              background: "linear-gradient(90deg, #7fffd4 0%, #38bdf8 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              textShadow:
-                "0 4px 20px rgba(56,189,248,0.30), 0 1px 1px rgba(0,0,0,0.10)",
-              lineHeight: 1.6,
+              textShadow: `
+      0 2px 6px rgba(0,0,0,0.18)  /* chỉ một bóng đen nhạt cho nổi chữ, KHÔNG glow trắng */
+    `,
+              lineHeight: 1.38,
               marginTop: "0.5em",
             }}
           >
