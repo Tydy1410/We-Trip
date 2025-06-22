@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import tiktok from "./assets/social-media.jpg"
 import logo from "./assets/WeTrip Avatar.jpg"
 import { getCount, incrementCount } from './firebase';
+import banner from "./assets/banner.jpg"
+import banner_mobile from "./assets/banner_mobile.jpg"
 // ============================================================================
 // Icon Components (Replaced lucide-react for standalone functionality)
 // ============================================================================
@@ -34,12 +36,19 @@ const FacebookIcon = ({ className = "w-6 h-6" }) => (
   </svg>
 );
 
-// Icon: Instagram
-const InstagramIcon = ({ className = "w-6 h-6" }) => (
-  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-  </svg>
-);
+const useIsMobile = (breakpoint = 640) => {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+
+  return isMobile;
+};
 
 // NOTE: TikTokIcon component has been removed and will be replaced by an <img> tag.
 
@@ -56,6 +65,8 @@ const HeroSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isCountLoading, setIsCountLoading] = useState(true);
+
+  const isMobile = useIsMobile();
 
   // Load số lần tải khi component mount
   useEffect(() => {
@@ -125,8 +136,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop&q=80")',
+          backgroundImage: `url(${isMobile ? banner_mobile : banner})`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10"></div>
