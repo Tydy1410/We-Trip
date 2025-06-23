@@ -4,6 +4,8 @@ import logo from "./assets/WeTrip Avatar.jpg";
 import { getCount, incrementCount } from "./firebase";
 import banner from "./assets/banner.jpg";
 import banner_mobile from "./assets/banner_mobile.jpg";
+import apple from "./assets/apple1.jpg";
+import android from "./assets/android1.jpg";
 // ============================================================================
 // Icon Components (Replaced lucide-react for standalone functionality)
 // ============================================================================
@@ -97,19 +99,15 @@ const useIsMobile = (breakpoint = 640) => {
 // Hero Section
 // ============================================================================
 const HeroSection = () => {
-  // State to manage the visibility of the social media icons
   const [isSocialsVisible, setIsSocialsVisible] = useState(false);
-  // UX FIX: State to manage logo text visibility on click
-  const [isLogoTextVisible, setIsLogoTextVisible] = useState(false);
-  // State để lưu số lần bấm nút tải ngay
   const [downloadCount, setDownloadCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [isCountLoading, setIsCountLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPlatformOptions, setShowPlatformOptions] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const isMobile = useIsMobile();
 
-  // Load số lần tải khi component mount
   useEffect(() => {
     const loadCount = async () => {
       setIsCountLoading(true);
@@ -117,78 +115,42 @@ const HeroSection = () => {
         const count = await getCount();
         setDownloadCount(count);
       } catch (error) {
-        console.error("Lỗi khi tải số lần tải:", error);
-        // Hiển thị 0 nếu có lỗi
         setDownloadCount(0);
       } finally {
         setIsCountLoading(false);
       }
     };
-
     loadCount();
   }, []);
 
-  // Hàm xử lý khi bấm nút tải ngay
   const handleDownloadClick = async () => {
     setIsLoading(true);
     try {
       await incrementCount();
-      // Cập nhật count ngay lập tức để UX tốt hơn
       setDownloadCount((prev) => prev + 1);
-      console.log("Download App Clicked - Count updated");
 
-      // Hiển thị thông báo thành công
+      // Hiển thị 2 nền tảng
+      setShowPlatformOptions(true);
+
+      // Hiển thị thông báo thành công như cũ (tuỳ ý, có thể bỏ)
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000); // Ẩn sau 3 giây
+      setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
-      console.error("Lỗi khi tăng số lần tải:", error);
       alert("Có lỗi xảy ra khi tải ứng dụng. Vui lòng thử lại!");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleShowPlatformOptions = () => {
+    setShowPlatformOptions(!showPlatformOptions);
+  }
+
   return (
     <section
       id="home"
       className="relative h-screen flex items-center justify-center text-white overflow-hidden"
     >
-      {/* UX FIX: Changed logo behavior from hover to click */}
-      <div className="absolute top-5 left-5 sm:top-8 sm:left-8 z-20">
-        {/* <div
-          onClick={() => setIsLogoTextVisible(!isLogoTextVisible)}
-          className="flex cursor-pointer items-center gap-3 overflow-hidden rounded-full bg-black/30 p-1.5 shadow-md transition-all duration-500 ease-in-out hover:bg-black/50 hover:shadow-lg backdrop-blur-sm"
-        >
-          <img
-            className="h-14 w-14 shrink-0 rounded-full object-cover"
-            src={logo}
-            alt="We Trip Logo"
-          />
-          <div
-            className={`grid h-12 transition-[grid-template-columns] duration-500 ease-in-out ${
-              isLogoTextVisible ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-            }`}
-          >
-            <div className="flex items-center">
-              <span
-                className="whitespace-nowrap pr-4 text-2xl font-bold text-teal-300"
-                style={{
-                  fontFamily: "'Pacifico', cursive",
-                  background:
-                    "linear-gradient(90deg, #2dd4bf 0%, #38bdf8 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  textShadow:
-                    "0 4px 20px rgba(56,189,248,0.30), 0 1px 1px rgba(0,0,0,0.10)",
-                  lineHeight: 1.8,
-                }}
-              >
-                We Trip
-              </span>
-            </div>
-          </div>
-        </div> */}
-      </div>
       {/* Background Image and Gradient Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -271,10 +233,10 @@ const HeroSection = () => {
             )}
           </div>
 
-          {/* Download button với count */}
           <div className="flex flex-col items-center gap-2">
+            {/* Nút tải ứng dụng luôn hiện */}
             <button
-              onClick={handleDownloadClick}
+              onClick={handleShowPlatformOptions}
               disabled={isLoading}
               className="group w-full sm:w-auto px-8 py-4 bg-teal-500 border-2 border-teal-500 text-white rounded-full font-semibold text-lg hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -282,7 +244,69 @@ const HeroSection = () => {
               {isLoading ? "Đang tải..." : "Tải ứng dụng"}
             </button>
 
-            {/* Hiển thị số lần tải */}
+            {/* Slide logo nền tảng xuống khi showPlatformOptions */}
+            <div
+              className={`
+      flex items-center justify-center gap-3
+      transition-all duration-300 
+      ${
+        showPlatformOptions
+          ? "opacity-100 translate-y-0 pointer-events-auto mt-4"
+          : "opacity-0 -translate-y-4 pointer-events-none h-0"
+      }
+    `}
+              style={{ minHeight: showPlatformOptions ? 56 : 0 }} // giữ chiều cao khi ẩn/hiện
+            >
+              <a
+                href="https://apps.apple.com/app/id0000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Tải cho iOS"
+                className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:shadow-lg hover:scale-110 transition-all flex items-center justify-center"
+                onClick={async (e) => {
+                  setIsLoading(true);
+                  try {
+                    await incrementCount();
+                    setDownloadCount((prev) => prev + 1);
+                    setShowSuccess(true);
+                    setShowPlatformOptions(false);
+                    setTimeout(() => setShowSuccess(false), 3000);
+                  } catch {
+                    alert("Có lỗi xảy ra khi tải ứng dụng. Vui lòng thử lại!");
+                  } finally {
+                    setIsLoading(false);
+                  }
+                  // không preventDefault để link tự mở
+                }}
+              >
+                <img src={apple} alt="Tải cho iOS" className="w-7 h-7" />
+              </a>
+              <a
+                href="https://expo.dev/artifacts/eas/qMSrMCyGzdRShwZ6Gn1MZv.apk"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Tải cho Android"
+                className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:shadow-lg hover:scale-110 transition-all flex items-center justify-center"
+                onClick={async (e) => {
+                  setIsLoading(true);
+                  try {
+                    await incrementCount();
+                    setDownloadCount((prev) => prev + 1);
+                    setShowSuccess(true);
+                    setShowPlatformOptions(false);
+                    setTimeout(() => setShowSuccess(false), 3000);
+                  } catch {
+                    alert("Có lỗi xảy ra khi tải ứng dụng. Vui lòng thử lại!");
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
+                <img src={android} alt="Tải cho Android" className="w-7 h-7" />
+              </a>
+            </div>
+
+            {/* Đếm số lần tải */}
             <div className="text-sm text-slate-300 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
               {isCountLoading ? (
                 <span className="text-teal-300">Đang tải...</span>
