@@ -258,6 +258,7 @@ const HeroSection = () => {
               style={{ minHeight: showPlatformOptions ? 56 : 0 }} // giữ chiều cao khi ẩn/hiện
             >
               <a
+              //Link tair IOS
                 href="https://apps.apple.com/app/id0000000"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -282,7 +283,8 @@ const HeroSection = () => {
                 <img src={apple} alt="Tải cho iOS" className="w-7 h-7" />
               </a>
               <a
-                href="https://expo.dev/artifacts/eas/qMSrMCyGzdRShwZ6Gn1MZv.apk"
+              //Link tair Android
+                href="https://expo.dev/artifacts/eas/efJoCSxUt1eYwSYfqR3EJf.apk"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Tải cho Android"
