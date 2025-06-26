@@ -284,7 +284,7 @@ const HeroSection = () => {
               </a>
               <a
               //Link tair Android
-                href="https://expo.dev/artifacts/eas/efJoCSxUt1eYwSYfqR3EJf.apk"
+                href="https://expo.dev/artifacts/eas/w5HRKyFmXJNi3qwWsWqTL8.apk"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Tải cho Android"
